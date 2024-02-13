@@ -1,0 +1,265 @@
+{% load i18n %}
+<!DOCTYPE html>
+	{% load static %}
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"><!--<![endif]-->
+
+<head>
+	<!-- Basic Page Needs -->
+	<meta charset="UTF-8">
+	<!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
+	<title>{% block title %} {% endblock title %}</title>
+
+	<meta name="author" content="CreativeLayers">
+
+	<!-- Mobile Specific Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<!-- Boostrap style -->
+	<link rel="stylesheet" type="text/css" href="{% static 'stylesheets/bootstrap.min.css' %}">
+
+	<!-- Theme style -->
+	<link rel="stylesheet" type="text/css" href="{% static 'stylesheets/style.css' %}">
+
+	<!-- Reponsive -->
+	<link rel="stylesheet" type="text/css" href="{% static 'stylesheets/responsive.css' %}">
+
+	<link rel="shortcut icon" href="{% static 'favicon/favicon.png' %}">
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body class="header_sticky">
+	<div class="boxed">		
+		<section id="header" class="header">
+			<div class="header-top">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-4">
+							<ul class="flat-support">
+								<li>
+									<a href="{% url 'home' %}" title="">Ana-sehife</a>
+								</li>
+							</ul><!-- /.flat-support -->
+						</div><!-- /.col-md-4 -->
+						<div class="col-md-4" style="margin-left: 33%;">
+							<ul class="flat-unstyled">
+								<li class="account">
+									<a href="my-account.html" title="">Şəxsi Kabinet</a>
+								</li>
+							</ul><!-- /.flat-unstyled -->
+						</div><!-- /.col-md-4 -->
+					</div><!-- /.row -->
+				</div><!-- /.container -->
+			</div><!-- /.header-top -->
+			<div class="header-middle">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-3">
+							<div id="logo" class="logo">
+								<a href="" title="" >
+									<img src="{% static 'images/logos/logo2.png' %}" style="height: 107px;" alt="">
+								</a>
+							</div><!-- /#logo -->
+						</div><!-- /.col-md-3 -->
+						<div class="col-md-6" style="max-width: 50%;margin-left: 15%;">
+							<div class="top-search">
+								<form action="{% url 'search' %}" method="get" class="form-search" accept-charset="utf-8">
+
+									<div class="box-search">
+										<input type="text" name="search" placeholder="Axtar....">
+										<span class="btn-search">
+											<button type="submit" class="waves-effect"><img src="{% static 'images/icons/search.png' %}" alt=""></button>
+										</span>
+									</div><!-- /.box-search -->
+								</form><!-- /.form-search -->
+							</div><!-- /.top-search -->
+
+
+						
+						</div><!-- /.col-md-6 -->
+						<div class="col-md-3" style="max-width: 10%;">
+							<div class="box-cart">
+								<div class="inner-box">
+								</div><!-- /.inner-box -->
+								<div class="inner-box">
+									<a href="{% url 'sepet' %}" title="">
+										<div class="icon-cart">
+											<img src="{% static 'images/icons/cart.png' %}" alt="">
+										</div>
+									</a>
+								</div><!-- /.inner-box -->
+							</div><!-- /.box-cart -->
+						</div><!-- /.col-md-3 -->
+					</div><!-- /.row -->
+				</div><!-- /.container -->
+			</div><!-- /.header-middle -->
+			<div class="header-bottom">
+				<div class="container" style="width: 22%;margin-left: 75px;position: absolute;margin-top: -11px;">
+					<div class="row">
+						<div class="col-md-3 col-2">
+							<div id="mega-menu">
+			                  {% include 'main/categories.html' %}
+					      </div>
+				        </div><!-- /.col-md-3 -->
+			        </div><!-- /.row -->
+			    </div><!-- /.container -->
+			</div><!-- /.header-bottom -->
+
+		</section><!-- /#header -->
+
+        {% block content %}
+
+
+        {% endblock %}
+		<section class="footer-bottom">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<p class="copyright"> All Rights Reserved © Techno Store 2017</p>
+						<p class="btn-scroll">
+							<a href="#" title="">
+								<img src="{% static 'images/icons/top.png' %}'" alt="">
+							</a>
+						</p>
+					</div><!-- /.col-md-12 -->
+				</div><!-- /.row -->
+			</div><!-- /.container -->
+		</section><!-- /.footer-bottom -->
+
+	</div><!-- /.boxed -->
+		<script type="text/javascript" src="{% static 'javascript/jquery.min.js' %}"></script>
+		<script>
+			$(document).ready(function () {
+				$('.dropdown, .btn-mega').hover(
+					function () {
+						var categoryId = $(this).data('category-id');
+
+						if (categoryId === 'all-categories') {
+							$.ajax({
+								type: 'GET',
+								url: '/get-categories/' + categoryId + '/',
+								success: function (data) {
+									$('#mega-menu').html(data.categories_html);
+								}
+							});
+						}
+					},
+				);
+		});
+		</script>
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				var currentPath = window.location.pathname.toLowerCase();
+				var headerBottom = document.querySelector('.header-bottom');
+			
+				if (currentPath === '/search') {
+					headerBottom.classList.add('d-none');
+				}
+			});
+		</script>
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				var currentPath = window.location.pathname.toLowerCase();
+				var headerBottom = document.querySelector('.header-bottom');
+			
+				if (currentPath === '/sepet/') {
+					headerBottom.classList.add('d-none');
+				}
+			});
+		</script>
+		<script>
+			// Sayfa yüklendiğinde ilk kategoriye otomatik olarak AJAX isteği yap.
+			$(document).ready(function () {
+				var defaultCategorySlug = "{{ categories.0.slug }}";  // İlk kategoriyi al
+				fetchProducts(defaultCategorySlug);  // İlk kategoriye ait ürünleri getir
+			});
+		
+			// Kategoriye tıklanma olayını dinler.
+			$(".category-link").click(function () {
+				var categorySlug = $(this).data("category-slug");
+				fetchProducts(categorySlug);  // Tıklanan kategoriye ait ürünleri getir
+			});
+		
+			// AJAX isteği için fonksiyon
+			function fetchProducts(categorySlug) {
+				$.ajax({
+					url: "/fetch-products/",
+					method: "GET",
+					data: { category_slug: categorySlug },
+					success: function (data) {
+						$("#product-container").html(data.product_html);
+					},
+					error: function (xeta) {
+						console.error("Mehsul yuklendikde xeta bas verdi: ", xeta);
+					}
+				});
+			}
+		</script>
+		<script>
+				$(document).ready(function() {
+				$('.btn-down, .btn-up').click(function() {
+				var productId = $(this).data('product-id');
+				var quantityInput = $('#quantity-' + productId);
+				var quantity = parseInt(quantityInput.val());
+				var price = parseFloat($('#price-' + productId).text().replace('$', ''));
+
+				// Miktarı artır veya azalt
+				if ($(this).hasClass('btn-down')) {
+					if (quantity > 1) {
+						quantity -= 1;
+						quantityInput.val(quantity);
+					}
+				} else {
+					quantity += 1;
+					quantityInput.val(quantity);
+				}
+
+				// Güncellenen miktarı ve fiyatı kullanarak toplamı güncelle
+				updateTotal();
+			});
+
+			// Toplamı güncelleyen fonksiyon
+			function updateTotal() {
+				var totalPrice = 0;
+
+				// Her bir ürünün toplam fiyatını hesapla
+				$('.quanlity').each(function() {
+					var productId = $(this).find('.btn-up').data('product-id');
+					var quantity = parseInt($('#quantity-' + productId).val());
+					var price = parseFloat($('#price-' + productId).text().replace('$', ''));
+					var total = quantity * price;
+					$('#total-' + productId).html('<i class="fa-solid fa-manat-sign" style="margin-right: 8px;font-size: 17px;"></i>' + total.toFixed(2));
+					totalPrice += total;
+				});
+
+				// Toplam fiyatı güncelle
+				$('.price-total').text('$' + totalPrice.toFixed(2));
+			}
+		});
+
+		</script>
+
+        <script type="text/javascript" src="{% static 'javascript/jquery-ui.js' %}"></script>
+		<script type="text/javascript" src="{% static 'javascript/tether.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'javascript/bootstrap.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'javascript/waypoints.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'javascript/easing.js' %}"></script>
+		<script type="text/javascript" src="{% static 'javascript/jquery.zoom.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'javascript/jquery.flexslider-min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'javascript/owl.carousel.js' %}"></script>
+		<script type="text/javascript" src="{% static 'javascript/smoothscroll.js' %}"></script>
+		<script type="text/javascript" src="{% static 'javascript/jquery.mCustomScrollbar.js' %}"></script>
+		<script type="text/javascript" src="{% static 'javascript/waves.min.js' %}"></script> 
+		<script type="text/javascript" src="{% static 'javascript/jquery.countdown.js' %}"></script>
+		<script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
+
+		<script type="text/javascript" src="{% static 'javascript/jquery.circlechart.js' %}"></script>
+		<script type="text/javascript" src="{% static 'javascript/tether.min.js' %}"></script>
+
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtRmXKclfDp20TvfQnpgXSDPjut14x5wk&region=AZ"></script>
+	    <script type="text/javascript" src="{% static 'javascript/gmap3.min.js' %}"></script>
+
+
+	
+</body>	
+</html>

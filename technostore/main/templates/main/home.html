@@ -1,0 +1,93 @@
+{% extends 'main/layout.html' %}
+{% block title %} home pages {% endblock title %}
+{% load static %}
+{% block content %}
+
+<section class="flat-imagebox">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-tab">
+                    <ul class="tab-list">
+                        <li class="active" style="margin-left: 88%;">Yeni Mehsul</li>
+                    </ul>
+                </div><!-- /.product-tab -->
+            </div><!-- /.col-md-12 -->
+        </div><!-- /.row -->
+        <div class="box-product">
+            <div class="row">
+                <div class="col-lg-12 col-sm-6">
+                    {% for product in products %}
+                    <div class="product-box" style="display: inline-block; width: 22%; height: 470px;margin-bottom:0px !important;margin-right: 15px;">
+                        <div class="imagebox">
+                            <ul class="box-image">
+                                {% if product.primary_photo %}
+                                    <li>
+                                        <a href="{% url 'product_detail' product_slug=product.slug %}" title="{{ product.title }}">
+                                            <img style="height: 160px;" src="{{ product.primary_photo.url }}" alt="Product Photo 4">
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul><!-- /.box-image -->
+                            <div class="box-content">
+                                <div class="cat-name">
+                                    <a href="#" title="">{{ product.sub_sub_category.title }}</a>
+                                </div>
+                                <div class="product-name">
+                                    <a href="{% url 'product_detail' product_slug=product.slug %}" title="{{ product.title }}">{{ product.title }}</a>
+                                </div>
+                                <div class="price">
+                                    <span class="sale">${{ product.sale_price }}</span>
+                                    <span class="regular">${{ product.regular_price }}</span>
+                                </div>
+                            </div><!-- /.box-content -->
+                            <div class="box-bottom">                                        
+                                <div class="btn-add-cart">
+                                    <form method="post" action="{% url 'sepete_ekle' product_id=product.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit">
+                                            <img src="{% static 'images/icons/add-cart.png' %}" alt=""> Səbətə Əlavə et
+                                        </button>
+                                    </form>
+                                </div>
+                            </div><!-- /.box-bottom -->
+                        </div><!-- /.imagebox -->
+                    </div>  
+                    {% endfor %}    
+                </div><!-- /.col-lg-3 col-sm-6 -->
+            </div><!-- /.row -->
+        </div><!-- /.box-product -->
+    </div><!-- /.container -->
+</section><!-- /.flat-imagebox -->
+
+<section class="flat-imagebox style2 background"> 
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-wrap">
+                    <div class="product-tab style1">
+                        <ul class="tab-list">
+                            {% for category in categories %}
+                                {% if not category.parent %}
+                                    <li class="category-link" data-category-slug="{{ category.slug }}" >{{ category.title }}</li>
+                                {% endif %}   
+                            {% endfor %}
+                        </ul><!-- /.tab-list -->
+                    </div><!-- /.product-tab style1 -->
+                    <div class="tab-item">
+                        <div class="row">
+                            <div id="product-list-container" style="width: 100%;">
+                                <div class="col-md-12 col-sm-6" id="product-container">
+                                
+                                </div><!-- /.col-md-3 col-sm-6 -->
+                            </div>
+                        </div><!-- /.row -->
+        
+                    </div><!-- /.tab-item -->
+                </div><!-- /.product-wrap -->
+            </div><!-- /.col-md-12 -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+</section><!-- /.flat-imagebox style2 -->
+
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'main/layout.html' %}
+{% block title %} Shopping pages {% endblock title %}
+{% load static %}
+{% block content %}
+
+		<main id="shop">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 col-md-8">
+						<div class="main-shop">
+							<div class="wrap-imagebox">
+								<div class="tab-product">
+									<div class="row sort-box">
+										{% for shop_product in products %}
+
+											<div class="col-lg-3 col-sm-6">
+												<div class="product-box" style="height: 465px; margin-top: 10px; margin-bottom: -5px;">
+													<div class="imagebox">
+														<div class="box-image">
+															{% if shop_product.primary_photo %}
+																<a href="#" title="">
+																	<img style="height: 165px;" src="{{ shop_product.primary_photo.url }}" alt="">
+																</a>
+															{% endif %}						
+														</div><!-- /.box-image -->
+														<div class="box-content">
+															<div class="cat-name">
+																<a href="#" title="">{{ shop_product.sub_sub_category.title}}</a>
+															</div>
+															<div class="product-name">
+																<a href="{% url 'product_detail' product_slug=shop_product.slug %}" title="{{ shop_product.title }}">{{ shop_product.title }}</a>
+															</div>	
+															<div class="price">
+																<span class="sale">{{ shop_product.sale_price }}</span>
+																<span class="regular">{{ shop_product.regular_price }}</span>
+															</div>
+														</div><!-- /.box-content -->
+														<div class="box-bottom">
+															<div class="btn-add-cart">
+																<form method="post" action="{% url 'sepete_ekle' product_id=shop_product.id %}">
+																	{% csrf_token %}
+																	<button type="submit" style="width: 204px; margin-top: 5px;">
+																		<img src="{% static 'images/icons/add-cart.png' %}" alt="">	Səbətə Əlavə et
+																	</button>
+																</form>
+															</div>
+														</div><!-- /.box-bottom -->
+													</div><!-- /.imagebox -->
+												</div>
+											</div><!-- /.col-lg-4 col-sm-6 -->
+										{% endfor %}	
+									</div>
+								</div>
+							</div><!-- /.wrap-imagebox -->
+							<div class="blog-pagination" style="height: 50px;">
+								<!-- Sayfalama bağlantıları -->
+								<span>
+									Showing {{ products.start_index }}–{{ products.end_index }} of {{ products.paginator.count }} results
+								</span>
+								<ul class="flat-pagination style1" style="margin-top: -11px;">
+									{% if products.has_previous %}
+										<li class="prev">
+											<a href="?page=1" title="">
+												<img src="{% static 'images/icons/left-1.png' %}" alt="">İlk
+											</a>
+										</li>
+										<li class="prev">
+											<a href="?page={{ products.previous_page_number }}" title="">
+												<img src="{% static 'images/icons/left-1.png' %}" alt="">Geri
+											</a>
+										</li>
+									{% endif %}
+							
+									{% for num in products.paginator.page_range %}
+										<li{% if num == products.number %} class="active"{% endif %}>
+											<a href="?page={{ num }}" class="waves-effect" title="">{{ num }}</a>
+										</li>
+									{% endfor %}
+							
+									{% if products.has_next %}
+										<li class="next">
+											<a href="?page={{ products.next_page_number }}" title="">
+												İrəli<img src="{% static 'images/icons/right-1.png' %}" alt="">
+											</a>
+										</li>
+										<li class="next">
+											<a href="?page={{ products.paginator.num_pages }}" title="">
+												Son<img src="{% static 'images/icons/right-1.png' %}" alt="">
+											</a>
+										</li>
+									{% endif %}
+								</ul>
+							</div>
+						</div><!-- /.main-shop -->
+					</div><!-- /.col-lg-9 col-md-8 -->
+				</div><!-- /.row -->
+			</div><!-- /.container -->
+		</main><!-- /#shop -->
+{% endblock %}
